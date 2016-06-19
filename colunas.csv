@@ -15,6 +15,7 @@ Número|Número:| Complemento:
 Complemento|Complemento:|Bairro:
 Bairro|Bairro:|UF:
 UF|UF:|Localidade:
+Região|UF:|Localidade:
 Localidade|Localidade:|CEP:
 CEP|CEP:|Caixa Postal:
 Caixa Postal|Caixa Postal:|Localização geográfica

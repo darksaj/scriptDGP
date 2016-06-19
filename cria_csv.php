@@ -24,7 +24,7 @@ $fd = fopen("dados_ok.csv", "w");
 //lista de pesquisadores 
 $fp = fopen("pesquisadores_ok.csv", "w");
 
-	$valor_fp = "Tipo|Lider|Nome|Título|Data|Grupo|Situação\n";
+	$valor_fp = "Tipo|Líder|Nome|Título|Data|Grupo|Situação|Ano de Criação|Período|Area|Sub-Area|UF|Região\n";
 	fwrite($fp,$valor_fp);
 	// Lê cada uma das linhas do arquivo
 	$valor_fd="";
@@ -108,13 +108,66 @@ $fp = fopen("pesquisadores_ok.csv", "w");
 							$fim = substr(trim($valor_fd),0,3)."9";
 							$valor_fd = substr(trim($valor_fd),0,3)."0-".$fim;
 							if ($fim > date ("Y"))
-							$valor_fd = str_ireplace($fim,date ("Y"),$valor_fd);
+								$valor_fd = str_ireplace($fim,date ("Y"),$valor_fd);
+							$period=$valor_fd;
 						break;
 						case "Endereço":
 							echo $end=$valor_fd;
 						break;
 						case "Situação do grupo":
 							 $sit=$valor_fd;
+						break;
+						case "Ano de formação":
+							 $ano_form=$valor_fd;
+						break;
+						case "UF":
+							 $uf=$valor_fd;
+						break;
+						case "Região":
+						//echo "-".$valor_fd."-";
+							switch(trim($valor_fd)){
+								case "AM":
+								case "AP":
+								case "PA":
+								case "RO":
+								case "RR":
+								case "TO":
+								case "AC":
+									$reg_uf="Norte";
+								break;
+								case "PR":
+								case "RS":
+								case "SC":
+									$reg_uf="Sul";
+								break;
+								case "DF":
+								case "GO":
+								case "MS":
+								case "MT":
+									$reg_uf="Centro-Oeste";
+								break;
+								case "AL":
+								case "BA":
+								case "CE":
+								case "MA":
+								case "PB":
+								case "PE":
+								case "PI":
+								case "RN":
+								case "SE":
+									$reg_uf="Norteste";
+								break;
+								case "ES":
+								case "MG":
+								case "RJ":
+								case "SP":
+									$reg_uf="Sudeste";
+								break;
+								default:
+									$reg_uf="";
+								break;
+							}
+							$valor_fd=$reg_uf;
 						break;
 						case "Líder\(es\) do grupo":
 						
@@ -129,13 +182,13 @@ $fp = fopen("pesquisadores_ok.csv", "w");
 							//$valor_fd=str_ireplace("; ","|",$valor_fd);
 							$area = explode("; ",$valor_fd);
 							$valor_fd=$area[0];
-							$valor_fd=trim($valor_fd);
+							$area_pred=$valor_fd=trim($valor_fd);
 						break;
 						case "Sub-Area":
 							//$valor_fd=str_ireplace("; ","|",$valor_fd);
 							$area = explode("; ",$valor_fd);
 							$valor_fd=$area[1];
-							$valor_fd=trim($valor_fd);
+							$sub_area=$valor_fd=trim($valor_fd);
 						break;
 						case "Pesquisadores":
 						case "Estudantes":
@@ -169,8 +222,8 @@ $fp = fopen("pesquisadores_ok.csv", "w");
 							$valor_fp=str_ireplace($regex_campo."|",$regex_campo."|N|",$valor_fp);
 							
 							$valor_fp=str_ireplace("| ","|",$valor_fp);
-							//acrecenta url do grupo
-							$valor_fp=str_ireplace("#","|".trim($end)."|".trim($sit)."\n",$valor_fp);
+							//acrescenta informações do grupo: endereço, situação, ano, periodo, uf e regiao
+							$valor_fp=str_ireplace("#","|".trim($end)."|".trim($sit)."|".trim($ano_form)."|".trim($period)."|".trim($area_pred)."|".trim($sub_area)."|".trim($uf)."|".trim($reg_uf)."\n",$valor_fp);
 							
 							//Marca dos lideres e vice-lideres do grupo
 							if ($regex_campo=="Pesquisadores"){
@@ -226,8 +279,9 @@ $fp = fopen("pesquisadores_ok.csv", "w");
 							//acrescenta nao lider
 							$valor_fp=str_ireplace($regex_campo."|",$regex_campo."|N|",$valor_fp);
 							$valor_fp=str_ireplace("| ","|",$valor_fp);
-							//acrecenta url do grupo
-							$valor_fp=str_ireplace("#","|".trim($end)."|".trim($sit)."\n",$valor_fp);
+							//acrescenta informações do grupo: endereço, situação, ano, periodo, uf e regiao
+							$valor_fp=str_ireplace("#","|".trim($end)."|".trim($sit)."|".trim($ano_form)."|".trim($period)."|".trim($area_pred)."|".trim($sub_area)."|".trim($uf)."|".trim($reg_uf)."\n",$valor_fp);
+							
 							
 							//Marca dos lideres e vice-lideres do grupo
 							if ($regex_campo=="Pesquisadores Egressos"){
@@ -261,8 +315,9 @@ $fp = fopen("pesquisadores_ok.csv", "w");
 							$valor_fp=str_ireplace($regex_campo."|",$regex_campo."|N|",$valor_fp);
 							$valor_fp=str_ireplace("  "," ",$valor_fp);
 							$valor_fp=str_ireplace("| ","|",$valor_fp);
-							//acrecenta url do grupo
-							$valor_fp=str_ireplace("#","|".trim($end)."|".trim($sit)."\n",$valor_fp);
+							//acrescenta informações do grupo: endereço, situação, ano, periodo, uf e regiao
+							$valor_fp=str_ireplace("#","|".trim($end)."|".trim($sit)."|".trim($ano_form)."|".trim($period)."|".trim($area_pred)."|".trim($sub_area)."|".trim($uf)."|".trim($reg_uf)."\n",$valor_fp);
+							
 							
 							if (!strpos($valor_fp,"Nenhum registro adicionado"))
 								fwrite($fp,$valor_fp);
